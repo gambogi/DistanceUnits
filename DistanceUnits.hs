@@ -8,10 +8,6 @@ module RunningDistance (
         , addDist
         , subDist
         , convertDist
-        , marathon
-        , outdoorTrack
-        , indoorTrack
-        , englishTrack
         )
 where
 
@@ -66,6 +62,84 @@ readDist builder unitstr prec str = processItems builder (readsPrec prec str)
 -- | English, Ascending
 
 --
+
+newtype Microinch = Microinch Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Microinch where
+    toMeters (Microinch x)  = Meter     (x / 39370000)
+    fromMeters (Meter x)    = Microinch (x * 39370000)
+    toFloat (Microinch x)   = x
+
+instance Show Microinch where
+    show (Microinch x) = show x ++ "μ"
+ 
+instance Read Microinch where
+    readsPrec = readDist Microinch "μ"
+
+--
+
+
+newtype Mil = Mil Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Mil where
+    toMeters    (Mil x)    = Meter (x / 39370)
+    fromMeters  (Meter x)  = Mil   (x * 39370)
+    toFloat     (Mil x)    = x
+
+instance Show Mil where
+    show (Mil x) = show x ++ "mil"
+instance Read Mil where
+    readsPrec = readDist Mil "mil"
+
+--
+
+newtype Line = Line Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Line where
+    toMeters    (Line x)   = Meter (x / 472.4)
+    fromMeters (Meter x)   = Line  (x * 472.4)
+    toFloat (Line x)        = x
+
+instance Show Line where
+    show (Line x) = show x ++ "line" 
+instance Read Line where
+    readsPrec = readDist Line "line"
+
+--
+
+newtype Barleycorn = Barleycorn Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Barleycorn where
+    toMeters (Barleycorn x) =  Meter ( x / 118.1)
+    fromMeters (Meter x)    = Barleycorn ( x * 118.1)
+    toFloat (Barleycorn x)  = x
+
+instance Show Barleycorn where
+    show (Barleycorn x) = show x ++ "barleycorn"
+instance Read Barleycorn where
+    readsPrec = readDist Barleycorn "barleycorn"
+
+--
+
+newtype Inch = Inch Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Inch where
+    toMeters   (Inch x)  = Meter ( x / 39.37)
+    fromMeters (Meter x) = Inch  ( x * 39.37)
+    toFloat    (Inch x)  = x
+
+instance Show Inch where
+    show (Inch x) = show x ++ "in"
+instance Read Inch where
+    readsPrec =  readDist Inch "in"
+
+--
+
 newtype Foot = Foot Float
     deriving (Eq, Ord, Num, Fractional)
 
@@ -111,6 +185,62 @@ instance Read Mile where
 -- | Metric Ascending
 
 --
+
+newtype Angstrom = Angstrom Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Angstrom where
+    toMeters (Angstrom x) = Meter       (x/(10*10))
+    fromMeters (Meter x)  = Angstrom    (x*10*10) 
+    toFloat (Angstrom x)  = x
+--
+
+newtype Nanometer  = Nanometer Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Nanometer where
+    toMeters (Nanometer x) = Meter      (x/(10**9))  
+    fromMeters (Meter x)   = Nanometer  (x*(10**9))
+    toFloat  (Nanometer x) = x
+
+instance Show Nanometer where
+    show (Nanometer x) = show x ++ "nm"
+instance Read Nanometer where
+    readsPrec = readDist Nanometer "nm"
+
+--
+
+type Micron     = Micrometer
+newtype Micrometer = Micrometer Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Micrometer where
+    toMeters (Micrometer x) = Meter     (x/1000000)
+    fromMeters (Meter x)    = Micrometer(x*1000000)
+    toFloat (Micrometer x)   = x
+instance Show Micrometer where
+    show (Micrometer x) = show x ++ "µm"
+
+instance Read Micrometer where
+    readsPrec = readDist Micrometer "µm"
+
+--
+
+newtype Millimeter = Millimeter Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Millimeter where
+    toMeters (Millimeter x) = Meter    (x/1000)
+    fromMeters (Meter x)    = Millimeter(x*1000)
+    toFloat (Millimeter x)   = x
+instance Show Millimeter where
+    show (Millimeter x) = show x ++ "mm"
+
+instance Read Millimeter where
+    readsPrec = readDist Millimeter "mm"
+
+--
+
 newtype Meter = Meter Float
     deriving (Eq, Ord, Num, Fractional)
 
@@ -123,6 +253,7 @@ instance Show Meter where
 
 instance Read Meter where
     readsPrec = readDist Meter "m"
+
 --
 
 newtype Kilometer = Kilometer Float
@@ -138,11 +269,3 @@ instance Show Kilometer where
 
 instance Read Kilometer where
     readsPrec = readDist Kilometer "km"
-    
--- | Common Distances
-
---
-marathon         = 26.2 :: Mile
-outdoorTrack     = 400  :: Meter
-indoorTrack      = 200  :: Meter
-englishTrack     = 440  :: Yard
