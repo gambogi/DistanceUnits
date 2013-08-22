@@ -60,8 +60,8 @@ readDist builder unitstr prec str = processItems builder (readsPrec prec str)
 --------------------------------------------
 -- | Unit Definitions
 
+--
 -- | English, Ascending
-
 --
 
 newtype Microinch = Microinch Float
@@ -398,10 +398,7 @@ instance Read League where
     readsPrec = readDist League "league"
 
 --
-
-
 -- | Metric Ascending
-
 --
 
 newtype Angstrom = Angstrom Float
@@ -487,3 +484,64 @@ instance Show Kilometer where
 
 instance Read Kilometer where
     readsPrec = readDist Kilometer "km"
+
+--
+-- | Astronomical, ascending
+--
+
+newtype AU = AU Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance AU where
+    toMeters (AU x) = Meter ( x / 0.000000000006685)
+    fromMeters (Meter x) = AU (x * 0.000000000006685)
+    toFloat (AU x) = x
+
+instance Show AU where
+    show (AU x) = show x ++ "au"
+instance Read AU where
+    readsPrec = readDist x ++ "au"
+
+--
+
+newtype Lightyear = Lightyear Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Lightyear where
+    toMeters (Lightyear x) = Meter (x / (1.057*(10**(-16)))
+    fromMeters (Meter x) = Lightyear ( x * (1.057*(10**(-16))))
+
+instance Show Lightyear where
+    show (Lightyear x) = show x ++ "lightyear"
+instance Read Lightyear where
+    readsPrec = readDist Lightyear "lightyear"
+
+--
+
+newtype Parsec = Parsec Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance Parsec where
+    toMeters (Parsec x) = Meter ( x / (3.241*(10**(-17))
+    fromMeters (Meter x) = Parsec (x *  (3.241*(10**(-17))))
+    toFloat (Parsec x) = x
+
+instance Show Parsec where
+    show (Parsec x) = show x ++ "pc"
+instance Read Parsec where
+    readsPrec = readDist Parsec "pc"
+
+--
+
+newtype RedShift = RedShift Float
+    deriving (Eq, Ord, Num, Fractional)
+
+instance Distance RedShift where
+    toMeters (RedShift x) = Meter ( x / (7.67*(10**-17)))
+    fromMeters (Meter x) = RedShift ( x * (7.67*(10**-17)))
+    toFloat (Redshift x) = x
+
+instance Show RedShift where
+    show (RedShift x) = x ++ "z"
+instance Read RedShift where
+    readsPrec = readDist RedShift "z"
