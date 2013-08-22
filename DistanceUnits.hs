@@ -4,9 +4,19 @@ module RunningDistance (
         , Mil
         , Line
         , Barleycorn
+        , Finger
         , Inch
+        , Nail
+        , Palm
         , Foot
+        , Cubit
         , Yard
+        , Ell
+        , Fathom
+        , Perch
+        , Rod
+        , Chain
+        , Furlong
         , Mile
         , Meter
         , Kilometer
