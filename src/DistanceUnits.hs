@@ -8,6 +8,9 @@ module DistanceUnits (
         , Inch
         , Nail
         , Palm
+        , Hand
+        , Link
+        , Span
         , Foot
         , Cubit
         , Yard
@@ -18,20 +21,25 @@ module DistanceUnits (
         , Chain
         , Furlong
         , Mile
+        , League
         , Angstrom
         , Nanometer
         , Micrometer
-        , Milimeter
+        , Millimeter
         , Centimeter 
         , Decimeter
         , Meter
+        , Decameter
+        , Hectometer
         , Kilometer
+        , AU
+        , Lightyear
+        , Parsec
         , addDist
         , subDist
         , convertDist
         )
 where
-
 import Data.Data(Data)
 import Data.List(isPrefixOf)
 
@@ -496,7 +504,7 @@ instance Distance Decimeter where
     toFloat (Decimeter x) = x
 
 instance Show Decimeter where
-    show (Decimeter x) = x ++ "dm"
+    show (Decimeter x) = show x ++ "dm"
 instance Read Decimeter where
     readsPrec = readDist Decimeter "dm"
 
@@ -535,10 +543,10 @@ instance Read Decameter where
 newtype Hectometer = Hectometer Float 
     deriving (Eq, Ord, Num, Fractional)
 
-instance Distance Hectometer Float where
+instance Distance Hectometer where
     toMeters (Hectometer x) = Meter (x*100)
     fromMeters (Meter x) = Hectometer (x/100)
-    toFloat (Decameter x) = x
+    toFloat (Hectometer x) = x
 
 instance Show Hectometer where
     show (Hectometer x) = show x ++ "hm"
@@ -608,17 +616,3 @@ instance Show Parsec where
 instance Read Parsec where
     readsPrec = readDist Parsec "pc"
 
---
-
-newtype RedShift = RedShift Float
-    deriving (Eq, Ord, Num, Fractional)
-
-instance Distance RedShift where
-    toMeters (RedShift x) = Meter ( x / (7.67*(10**(-17))))
-    fromMeters (Meter x) = RedShift ( x * (7.67*(10**(-17))))
-    toFloat (RedShift x) = x
-
-instance Show RedShift where
-    show (RedShift x) = show x ++ "z"
-instance Read RedShift where
-    readsPrec = readDist RedShift "z"
