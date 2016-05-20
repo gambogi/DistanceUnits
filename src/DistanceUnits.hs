@@ -430,8 +430,8 @@ newtype Angstrom = Angstrom Float
     deriving (Eq, Ord, Num, Fractional)
 
 instance Distance Angstrom where
-    toMeters (Angstrom x) = Meter       (x/(10*10))
-    fromMeters (Meter x)  = Angstrom    (x*10*10) 
+    toMeters (Angstrom x) = Meter       (x/(10**10))
+    fromMeters (Meter x)  = Angstrom    (x*(10**10))
     toFloat (Angstrom x)  = x
 --
 
